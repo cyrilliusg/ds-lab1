@@ -104,7 +104,7 @@ jobs:
           script: |
             set -euo pipefail
             echo "Deploying $IMAGE"
-            bash ${{ env.REMOTE_DIR }}/deploy.sh "$IMAGE"
+            bash ${{ env.REMOTE_DIR }}/deploy.sh "$IMAGE" ${{ env.REMOTE_DIR }}
 
       - name: Run prod API Tests
         uses: matt-ball/newman-action@master

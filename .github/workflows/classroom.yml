@@ -106,13 +106,24 @@ jobs:
             echo "Deploying $IMAGE"
             bash ${{ env.REMOTE_DIR }}/deploy.sh "$IMAGE" ${{ env.REMOTE_DIR }}
 
-      - name: Run prod API Tests
+      - name: Wait until service is ready
+        run: |
+          for i in {1..60}; do
+            if curl -fsS "$SERVICE_URL/api/v1/health" >/dev/null; then
+              echo "Service is ready"; exit 0
+            fi
+            sleep 2
+          done
+          echo "Service not ready in time"; exit 1
+
+      - name: Run API Tests
         uses: matt-ball/newman-action@master
         with:
           collection: postman/[inst] Lab1.postman_collection.json
           environment: postman/[inst][heroku] Lab1.postman_environment.json
           delayRequest: 100
           reporters: '[ "cli" ]'
+
 
       - name: Autograding
         uses: education/autograding@v1

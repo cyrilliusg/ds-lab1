@@ -48,11 +48,11 @@ jobs:
       - name: Run tests
         run: python manage.py test
 
-      - name: Run API Tests
+      - name: Run local API Tests
         uses: matt-ball/newman-action@master
         with:
           collection: postman/[inst] Lab1.postman_collection.json
-          environment: postman/[inst][heroku] Lab1.postman_environment.json
+          environment: postman/[inst][local] Lab1.postman_environment.json
           delayRequest: 100
           reporters: '[ "cli" ]'
 
@@ -117,3 +117,15 @@ jobs:
             set -euo pipefail
             echo "Deploying $IMAGE"
             bash ${{ env.REMOTE_DIR }}/deploy.sh "$IMAGE"
+
+      - name: Run prod API Tests
+        uses: matt-ball/newman-action@master
+        with:
+          collection: postman/[inst] Lab1.postman_collection.json
+          environment: postman/[inst][heroku] Lab1.postman_environment.json
+          delayRequest: 100
+          reporters: '[ "cli" ]'
+
+      - name: Autograding
+        uses: education/autograding@v1
+        continue-on-error: true

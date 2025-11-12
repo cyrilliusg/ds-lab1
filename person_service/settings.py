@@ -67,7 +67,8 @@ DATABASES = {
 if "test" in sys.argv:  # manage.py test
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "testdb.sqlite3"),
+        "NAME": ":memory:",
+        "TEST": {"NAME": ":memory:"},
     }
 
 os.makedirs(LOG_DIR, exist_ok=True)

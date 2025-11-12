@@ -6,6 +6,10 @@ APP_DIR="${2:?APP_DIR tag is required}"
 SERVICE_NAME="person-service" # менять это значение
 
 APP_DIR_PATH="/opt/$APP_DIR"
+
+echo "APP_DIR: $APP_DIR"
+echo "APP_DIR_PATH: $APP_DIR_PATH"
+
 COMPOSE_FILE="$APP_DIR_PATH/docker-compose.prod.yml"
 LOGS_VOLUME="${SERVICE_NAME}-logs"
 LOGS_DIR="/var/log/${SERVICE_NAME}"

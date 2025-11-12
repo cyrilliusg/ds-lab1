@@ -5,12 +5,7 @@ IMAGE="${1:?IMAGE tag is required}"
 APP_DIR="${2:?APP_DIR tag is required}"
 SERVICE_NAME="person-service" # менять это значение
 
-APP_DIR_PATH="/opt/$APP_DIR"
-
-echo "APP_DIR: $APP_DIR"
-echo "APP_DIR_PATH: $APP_DIR_PATH"
-
-COMPOSE_FILE="$APP_DIR_PATH/docker-compose.prod.yml"
+COMPOSE_FILE="$APP_DIR/docker-compose.prod.yml"
 LOGS_VOLUME="${SERVICE_NAME}-logs"
 LOGS_DIR="/var/log/${SERVICE_NAME}"
 
@@ -38,7 +33,7 @@ fi
 
 echo "Starting deployment of $IMAGE"
 
-cd "$APP_DIR_PATH"
+cd "$APP_DIR"
 
 echo "Stopping and removing old containers..."
 docker compose -f "$COMPOSE_FILE" down || true
@@ -58,4 +53,4 @@ echo "Cleaning up old images (keeping the latest 2)..."
 # Удалим все, кроме двух последних по времени
 docker images "${IMAGE%:*}" --format "{{.Repository}}:{{.Tag}}" | tail -n +3 | xargs -r docker rmi || true
 
-echo "$IMAGE" > "$APP_DIR_PATH/.current_image"
+echo "$IMAGE" > "$APP_DIR/.current_image"

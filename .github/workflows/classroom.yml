@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.event.workflow_run.head_sha }}
+      IMAGE: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.sha }}
       SERVICE_URL: ${{ secrets.SERVICE_BASE_URL }}
       REMOTE_DIR: /opt/${{ github.event.repository.name }}
 

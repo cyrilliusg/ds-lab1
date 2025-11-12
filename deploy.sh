@@ -4,7 +4,7 @@ set -euo pipefail
 IMAGE="${1:?IMAGE tag is required}"
 APP_DIR="${2:?APP_DIR tag is required}"
 SERVICE_NAME="person-service" # менять это значение
-
+echo "IMAGE: $IMAGE"
 COMPOSE_FILE="$APP_DIR/docker-compose.prod.yml"
 LOGS_VOLUME="${SERVICE_NAME}-logs"
 LOGS_DIR="/var/log/${SERVICE_NAME}"

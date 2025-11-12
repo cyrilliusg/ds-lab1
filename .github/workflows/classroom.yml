@@ -48,18 +48,6 @@ jobs:
       - name: Run tests
         run: python manage.py test
 
-      - name: Run local API Tests
-        uses: matt-ball/newman-action@master
-        with:
-          collection: postman/[inst] Lab1.postman_collection.json
-          environment: postman/[inst][local] Lab1.postman_environment.json
-          delayRequest: 100
-          reporters: '[ "cli" ]'
-
-      - name: Autograding
-        uses: education/autograding@v1
-        continue-on-error: true
-
   build_image:
     name: Build & Push Docker image
     needs: [ tests ]

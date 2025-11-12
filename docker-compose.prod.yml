@@ -1,0 +1,46 @@
+name: person-service
+
+networks:
+  internal:
+    external: true
+    name: internal_net # для соединения с ранее созданной сетью nginx
+
+volumes:
+  static:
+    external: true 
+    name: static_vol # для соединения с ранее созданным томом nginx
+  logs_dir:
+    external: true
+    name: person-service-logs # для соединения с ранее созданным томом
+
+
+services:
+  person-service:
+    container_name: person-service
+    image: ${IMAGE}
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - logs_dir:/app/logs # для логов
+      - static:/app/staticfiles  # collectstatic
+    expose:
+      - "8000"
+    read_only: true
+    tmpfs: [ "/tmp", "/run" ]
+    healthcheck:
+     test: ["CMD-SHELL", "python - <<'EOF'\nimport urllib.request, sys\ntry:\n  urllib.request.urlopen('http://person-service:8000/api/v1/health', timeout=2)\n  sys.exit(0)\nexcept Exception:\n  sys.exit(1)\nEOF"]
+     interval: 15s
+     timeout: 3s
+     retries: 5
+     start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+    networks:
+      internal:
+        aliases:
+          - person-service
+
+

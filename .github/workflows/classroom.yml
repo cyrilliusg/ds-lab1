@@ -93,7 +93,7 @@ jobs:
       REMOTE_DIR: /opt/${{ github.event.repository.name }}
 
     steps:
-      - name: Checkout
+      - name: Checkout #
         uses: actions/checkout@v4
 
       - name: Copy deploy files to server
